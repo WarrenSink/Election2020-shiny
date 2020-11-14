@@ -1,0 +1,48 @@
+---
+title: "FiveThirtyEight Data"
+author: "Warren Sink"
+date: "11/14/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r 538-loading}
+electionPolls2020 <- read_csv(file = "~/Downloads/president_polls.csv")
+genericBallotPolls <- read_csv(file = "~/Downloads/generic_ballot_polls.csv")
+electionPollAvg2020 <- read_csv(file = "~/Downloads/presidential_poll_averages_2020.csv")
+electionPollAvgPrior <- read_csv(file = "~/Downloads/pres_pollaverages_1968-2016.csv")
+
+censusFedElect2016 <- readxl::read_excel("~/Downloads/federalelections2016.xlsx", skip = 1, col_names = TRUE)
+```
+
+```{r 538-data-exploration}
+genericBallotPolls %>%
+  select(pollster_id, pollster, sample_size, methodology, population, fte_grade, dem, rep) %>%
+  drop_na(methodology, fte_grade) %>%
+  group_by(methodology) %>%
+  count(fte_grade) %>%
+  ungroup() %>%
+  mutate(fte_grade = recode_factor(as.factor(fte_grade), `1` = "A+",`2` = "A",`3` ="A-",`4` ="A/B", `5` ="B+", `6` ="B", `7` ="B-", `8` ="B/C", `9` ="C+",`10` ="C",`11` ="C-",`12` ="C/D",`13` ="D+",`14` ="D", `15` ="D-")) %>%
+  arrange(fte_grade)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
